@@ -1,9 +1,16 @@
-import React from 'react'
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router";
+import Landing from "./pages/Landing";
+import NotFound from "./pages/404";
 
-const App = () => {
+function App() {
   return (
-    <div>App</div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
