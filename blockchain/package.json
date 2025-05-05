@@ -1,0 +1,14 @@
+{
+  "name": "nft-trader-contract",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js --network fuji"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "dotenv": "^16.0.3",
+    "hardhat": "^2.17.0"
+  }
+}
