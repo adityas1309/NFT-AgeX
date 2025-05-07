@@ -54,5 +54,23 @@ router.get("/whale-activity", async (req, res) => {
   }
 });
 
+router.get("/top-collections", async (req, res) => {
+  try {
+    const response = await fetch("https://data-api.nftgo.io/eth/v1/market/rank/nft/24h?by=price&category=ALL&offset=0&limit=10", {
+      headers: { "X-API-KEY": NFTGO_API_KEY2 },
+    });
+    const data = await response.json();
+    console.log("🔹 AlI Raw Response:", data.nfts);
+    if (!data.nfts) {
+      throw new Error("Invalid top collections data");
+    }
+
+    res.json(data.nfts);
+  } catch (error) {
+    console.error("❌ Error Fetching Top Collections:", error.message);
+    res.status(500).json({ error: "Failed to fetch top collections" });
+  }
+});
+
 export default router;
 
