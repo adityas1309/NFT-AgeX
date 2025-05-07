@@ -72,5 +72,30 @@ router.get("/top-collections", async (req, res) => {
   }
 });
 
+router.get("/market-volume", async (req, res) => {
+  try {
+    const start_time = getISODate(29);
+    const end_time = getISODate(0);
+
+    const url = `${BASE_URL}/market/chart/volume?start_time=${encodeURIComponent(start_time)}&end_time=${encodeURIComponent(end_time)}&unit=USD`;
+
+    const response = await fetch(url, {
+      headers: { "X-API-KEY": NFTGO_API_KEY2 },
+    });
+
+    const data = await response.json();
+
+    const formattedData = {
+      dates: convertTimestamps(data.x),
+      volume: data.y,
+    };
+
+    res.json(formattedData);
+  } catch (error) {
+    console.error("❌ Error Fetching Market Volume Chart:", error.message);
+    res.status(500).json({ error: "Failed to fetch market volume data." });
+  }
+});
+
 export default router;
 
