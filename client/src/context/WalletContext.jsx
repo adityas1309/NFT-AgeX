@@ -66,7 +66,7 @@ export const WalletProvider = ({ children }) => {
       const signature = await signer.signMessage(message);
 
       const res = await fetch(
-        "http://localhost:5000/api/approve-auto-trading",
+        "https://nft-age-x.vercel.app/api/approve-auto-trading",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -95,7 +95,7 @@ export const WalletProvider = ({ children }) => {
       const walletAddress = await signer.getAddress();
       const signature = await signer.signMessage(message);
 
-      const res = await fetch("http://localhost:5000/api/revoke-auto-trading", {
+      const res = await fetch("https://nft-age-x.vercel.app/api/revoke-auto-trading", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ walletAddress, signature }),
