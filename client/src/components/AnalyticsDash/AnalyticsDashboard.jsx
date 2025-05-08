@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import ErrorMessage from "../ErrorMessage";
 import useAnalyticsData from "../../hooks/useAnalyticsData";
 import TopCollections from "./TopCollections";
+import WhaleActivity from "./WhaleActivity";
 
 const AnalyticsDashboard = () => {
   const { whaleActivity, topCollections, error } = useAnalyticsData();
@@ -18,6 +19,10 @@ const AnalyticsDashboard = () => {
         <div className="grid grid-cols-1 gap-12 w-full">
           <div>
             <TopCollections topCollections={topCollections} />
+          </div>
+
+          <div>
+            <WhaleActivity whaleActivity={whaleActivity} />
           </div>
         </div>
       </motion.div>
