@@ -11,6 +11,7 @@ import { FaHistory } from "react-icons/fa";
 import { IoSparklesSharp } from "react-icons/io5";
 import Dashboard from "./Dashboard";
 import Navbar from "../components/Navbar";
+import AnalyticsDashboard from "../components/AnalyticsDash/AnalyticsDashboard";
 
 const Home = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -82,6 +83,7 @@ const Home = () => {
 
         <main className="flex-1 overflow-y-auto p-4 border-l-2 border-black">
           {activeSection === "dashboard" && <Dashboard />}
+          {activeSection === "live-trading" && <AnalyticsDashboard />}
         </main>
       </div>
     </div>
