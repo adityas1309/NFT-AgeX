@@ -4,6 +4,8 @@ import ErrorMessage from "../ErrorMessage";
 import useAnalyticsData from "../../hooks/useAnalyticsData";
 import TopCollections from "./TopCollections";
 import WhaleActivity from "./WhaleActivity";
+import NFTMarketChart from "./NFTMarketChart";
+import { FiTrendingUp, FiImage } from "react-icons/fi";
 
 const AnalyticsDashboard = () => {
   const { whaleActivity, topCollections, error } = useAnalyticsData();
@@ -17,6 +19,15 @@ const AnalyticsDashboard = () => {
       >
         <ErrorMessage error={error} />
         <div className="grid grid-cols-1 gap-12 w-full">
+          <div className="relative bg-white p-6 border-4 border-black shadow-[8px_8px_0_0_#000] hover:shadow-[6px_6px_0_0_#000] transition-shadow">
+            <div className="flex items-center gap-3 mb-6">
+              <FiTrendingUp className="w-8 h-8 text-black" />
+              <h2 className="text-2xl font-bold text-black">
+                Market Volume Trends
+              </h2>
+            </div>
+            <NFTMarketChart />
+          </div>
           <div>
             <TopCollections topCollections={topCollections} />
           </div>
