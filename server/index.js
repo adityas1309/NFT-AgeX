@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import autoTradingRoutes from "./routes/autoTradingRoutes.js";
 import revokeAutoTradingRoute from "./routes/revokeAutoTrading.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
+import autoTradeRouter from "./routes/autoTradeRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -22,6 +23,7 @@ app.get("/api/hello", (req, res) => {
 app.use("/api", autoTradingRoutes);
 app.use("/api", revokeAutoTradingRoute);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/auto-trade", autoTradeRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
