@@ -5,6 +5,7 @@ import useAnalyticsData from "../../hooks/useAnalyticsData";
 import TopCollections from "./TopCollections";
 import WhaleActivity from "./WhaleActivity";
 import NFTMarketChart from "./NFTMarketChart";
+import NFTGoAutoTrade from "./NFTGoAutoTrade";
 import { FiTrendingUp, FiImage } from "react-icons/fi";
 
 const AnalyticsDashboard = () => {
@@ -19,6 +20,11 @@ const AnalyticsDashboard = () => {
       >
         <ErrorMessage error={error} />
         <div className="grid grid-cols-1 gap-12 w-full">
+
+          <div>
+            <NFTGoAutoTrade />
+          </div>
+          
           <div className="relative bg-white p-6 border-4 border-black shadow-[8px_8px_0_0_#000] hover:shadow-[6px_6px_0_0_#000] transition-shadow">
             <div className="flex items-center gap-3 mb-6">
               <FiTrendingUp className="w-8 h-8 text-black" />
