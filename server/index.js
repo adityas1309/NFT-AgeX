@@ -7,6 +7,7 @@ import autoTradingRoutes from "./routes/autoTradingRoutes.js";
 import revokeAutoTradingRoute from "./routes/revokeAutoTrading.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 import autoTradeRouter from "./routes/autoTradeRoutes.js";
+import transactionRouter from "./routes/transactionRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -24,6 +25,7 @@ app.use("/api", autoTradingRoutes);
 app.use("/api", revokeAutoTradingRoute);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/auto-trade", autoTradeRouter);
+app.use("/api/transactions", transactionRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
