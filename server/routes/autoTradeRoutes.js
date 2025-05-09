@@ -4,11 +4,86 @@ import axios from "axios";
 import getAIAnalysis from "../utils/getAIAnalysis.js";
 import Transaction from "../models/Transaction.js";
 import { buyNFT, sellNFT } from "../utils/buy_nft.js";
+import { getLiveTweets } from "../utils/twitter_sentiment.js";
+import { getFakeTweets } from "../utils/fake_tweets.js";
+import Message from "../models/Message.js";
+import fetchHistoricalData from "../utils/fetchHistoricalData.js";
 
 dotenv.config();
 
 const autoTradeRouter = express.Router();
 
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`;
+
+const getLastUpdateId = async () => {
+  try {
+    const lastMessage = await Message.findOne().sort({ update_id: -1 }).select("update_id");
+    return lastMessage ? lastMessage.update_id : 0;
+  } catch (error) {
+    console.error("⚠️ Error fetching last update ID:", error.message);
+    return 0;
+  }
+};
+
+const getTelegramMessages = async () => {
+  try {
+    const lastUpdateId = await getLastUpdateId();
+    console.log(`🚀 Fetching Telegram messages since update ID: ${lastUpdateId}`);
+
+    const response = await axios.get(`${TELEGRAM_URL}?offset=${lastUpdateId + 1}&timeout=10`);
+    if (!response.data.result || response.data.result.length === 0) {
+      console.log("🔄 No new messages.");
+      return [];
+    }
+
+    const messages = response.data.result
+      .filter((msg) => msg.message && msg.message.text)
+      .map((msg) => ({
+        text: msg.message.text,
+        username: msg.message.from?.username || "Unknown",
+        timestamp: new Date(msg.message.date * 1000),
+        update_id: msg.update_id,
+        telegram_data: msg
+      }))
+      .filter((msg) => msg.text.toLowerCase().includes("nft"));
+
+    if (messages.length > 0) {
+      console.log(`✅ NFT Telegram messages fetched: ${messages.length}`);
+    } else {
+      console.log("🔄 No new NFT messages detected.");
+    }
+
+    return messages;
+  } catch (error) {
+    console.error("❌ Error Fetching Telegram Messages:", error.message);
+    return [];
+  }
+};
+
+const getTwitterSentiment = async (nftToken) => {
+  try {
+    const liveTweets = await getLiveTweets(nftToken);
+    const parsed = JSON.parse(liveTweets);
+
+    if (!parsed || !Array.isArray(parsed) || parsed.length === 0) {
+      throw new Error("No tweets found or parsing failed");
+    }
+
+    return parsed;
+  } catch (err) {
+    console.warn(
+      "⚠️ Twitter fetch failed, falling back to AI-generated tweets."
+    );
+    try {
+      const fallbackTweets = await getFakeTweets(nftToken);
+      return JSON.parse(fallbackTweets);
+    } catch (fallbackError) {
+      console.error("❌ Groq AI fallback also failed:", fallbackError);
+      throw new Error("Failed to retrieve both live and fake tweets.");
+    }
+  }
+};
 
 autoTradeRouter.get("/nftgo", async (req, res) => {
   try {
